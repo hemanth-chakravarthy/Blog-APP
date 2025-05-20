@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios with the base URL from environment variables
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
+  baseURL: process.env.REACT_APP_API_URL || 'https://your-deployed-backend-url.com',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -37,6 +37,7 @@ api.interceptors.response.use(
 );
 
 export default api;
+
 
 
 

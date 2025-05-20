@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://your-vercel-app-url.vercel.app'
+    'https://your-deployed-frontend-url.com'
   ],
   credentials: true
 }));
@@ -36,6 +36,7 @@ app.use('/api/blogs', blogRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
