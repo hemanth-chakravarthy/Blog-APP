@@ -81,6 +81,11 @@ exports.updateBlog = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to update this blog' });
     }
     
+    // Prevent publishing a blog that's already published
+    if (status === 'published' && blog.status === 'published') {
+      return res.status(400).json({ message: 'Blog is already published' });
+    }
+    
     // Update the blog
     blog.title = title;
     blog.content = content;
@@ -166,6 +171,7 @@ exports.getPublishedBlogById = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 

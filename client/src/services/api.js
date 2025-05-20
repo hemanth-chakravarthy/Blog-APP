@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Create an instance of axios with the base URL from environment variables
+// Create an instance of axios with the base URL
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://your-deployed-backend-url.com',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -23,20 +23,29 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor to handle common errors
+// Add response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error);
     if (error.response) {
-      console.error('Response data:', error.response.data);
-      console.error('Response status:', error.response.status);
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log('Response data:', error.response.data);
+      console.log('Response status:', error.response.status);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log('Request error - no response received');
+    } else {
+      // Something happened in setting up the request
+      console.log('Error message:', error.message);
     }
     return Promise.reject(error);
   }
 );
 
 export default api;
+
 
 
 

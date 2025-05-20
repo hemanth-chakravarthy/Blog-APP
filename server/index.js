@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 // Load environment variables - make sure this is at the top
-dotenv.config();
+// Use path.resolve to ensure we're looking in the right place
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Check if MONGO_URI is loaded
 console.log('MONGO_URI exists:', !!process.env.MONGO_URI);
@@ -19,15 +21,8 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://blog-app-git-main-hemanthchinnu363-gmailcoms-projects.vercel.app',
-    'https://your-vercel-app-url.vercel.app',
-    'https://your-custom-domain.com'
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true
 }));
 
 app.use(express.json());

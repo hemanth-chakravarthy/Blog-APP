@@ -85,6 +85,23 @@ const EditBlogPage = () => {
       let response;
       
       if (blogData.status === 'published') {
+        // Check if blog is already published
+        if (blog && blog.status === 'published') {
+          toast.info('This blog is already published');
+          setIsSaving(false);
+          saveInProgressRef.current = false;
+          
+          // Redirect to dashboard if trying to publish an already published blog
+          if (!blogData.isAutoSave) {
+            navigationTimeoutRef.current = setTimeout(() => {
+              if (isMounted.current) {
+                navigate('/dashboard');
+              }
+            }, 1500);
+          }
+          return;
+        }
+        
         // Use the publish endpoint
         console.log('Publishing blog...');
         response = await api.post('/blogs/publish', blogData);
@@ -118,28 +135,34 @@ const EditBlogPage = () => {
         // Update the blog data with the response from the server
         setBlog(response.data);
         
-        // For manual saves (not auto-saves), navigate back to blogs page
+        // For manual saves (not auto-saves), navigate back to dashboard
         if (!blogData.isAutoSave) {
           // Add a small delay before redirecting to ensure the toast is visible
           navigationTimeoutRef.current = setTimeout(() => {
             if (isMounted.current) {
-              navigate('/blogs');
+              navigate('/dashboard');
             }
           }, 1500);
         }
       }
-      
-      // Return the saved blog data for the auto-save function
-      return response.data;
-    } catch (error) {
-      console.error('Error saving blog:', error);
-      if (isMounted.current) {
+    } catch (err) {
+      console.error('Error saving blog:', err);
+      if (err.response?.data?.message === 'Blog is already published') {
+        toast.info('This blog is already published');
+        
+        // Redirect to dashboard if trying to publish an already published blog
+        if (!blogData.isAutoSave) {
+          navigationTimeoutRef.current = setTimeout(() => {
+            if (isMounted.current) {
+              navigate('/dashboard');
+            }
+          }, 1500);
+        }
+      } else {
         toast.error('Failed to save blog. Please try again.');
       }
     } finally {
-      if (isMounted.current) {
-        setIsSaving(false);
-      }
+      setIsSaving(false);
       saveInProgressRef.current = false;
     }
   };
@@ -205,6 +228,7 @@ const EditBlogPage = () => {
 };
 
 export default EditBlogPage;
+
 
 
 

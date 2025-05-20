@@ -97,6 +97,13 @@ const BlogsPage = () => {
         return;
       }
       
+      // Check if blog is already published
+      if (blogToPublish.status === 'published') {
+        toast.info('This blog is already published');
+        setPublishingBlogId(null);
+        return;
+      }
+      
       // Update the blog status to published
       const updatedBlog = {
         ...blogToPublish,
@@ -116,9 +123,17 @@ const BlogsPage = () => {
       );
       
       toast.success('Blog published successfully');
+      
+      // Redirect to dashboard
+      window.location.href = '/dashboard';
+      
     } catch (err) {
       console.error('Error publishing blog:', err);
-      toast.error('Failed to publish blog. Please try again.');
+      if (err.response?.data?.message === 'Blog is already published') {
+        toast.info('This blog is already published');
+      } else {
+        toast.error('Failed to publish blog. Please try again.');
+      }
     } finally {
       setPublishingBlogId(null);
     }
@@ -325,6 +340,7 @@ const BlogsPage = () => {
 };
 
 export default BlogsPage;
+
 
 
 
