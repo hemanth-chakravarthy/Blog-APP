@@ -20,8 +20,12 @@ app.use(express.json());
 const MONGODB_URI = process.env.MONGO_URI;
 console.log('Using MongoDB Atlas URI:', MONGODB_URI.replace(/mongodb\+srv:\/\/([^:]+):([^@]+)@/, 'mongodb+srv://****:****@')); // Log without exposing credentials
 
+// Add this before mongoose.connect()
+const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
+console.log('MongoDB URI defined:', !!mongoUri);
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -36,6 +40,8 @@ app.use('/api/blogs', blogRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
 
 
 
