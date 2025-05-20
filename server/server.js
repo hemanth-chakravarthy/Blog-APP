@@ -10,9 +10,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://your-deployed-frontend-url.com'
+    'https://blog-app-rho-hazel-50.vercel.app',
+    'blog-app-git-main-hemanthchinnu363-gmailcoms-projects.vercel.app',
+    'blog-e1r46s216-hemanthchinnu363-gmailcoms-projects.vercel.app',
+    // Add any other domains you need
   ],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
 app.use(express.json());
 
@@ -40,6 +45,8 @@ app.use('/api/blogs', blogRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
 
 
 
