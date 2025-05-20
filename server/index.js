@@ -4,24 +4,15 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Load environment variables - make sure this is at the top
-// Use path.resolve to ensure we're looking in the right place
+// Load environment variables
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
-// Check if MONGO_URI is loaded
-console.log('MONGO_URI exists:', !!process.env.MONGO_URI);
-// Log a safe version of the URI (without credentials)
-if (process.env.MONGO_URI) {
-  const safeUri = process.env.MONGO_URI.replace(/mongodb\+srv:\/\/([^:]+):([^@]+)@/, 'mongodb+srv://****:****@');
-  console.log('MONGO_URI:', safeUri);
-}
 
 // Initialize express app
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: ['http://localhost:3000', 'https://blog-app-rho-hazel-50.vercel.app', 'https://blog-app-1ntb.onrender.com'],
   credentials: true
 }));
 
@@ -40,14 +31,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// Define routes
-app.use('/blogs', require('./routes/blogs'));
-app.use('/auth', require('./routes/auth'));
+// API routes
+app.use('/api/blogs', require('./routes/blogs'));
+app.use('/api/auth', require('./routes/auth'));
 
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  // Any route that doesn't match the above should serve the index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  });
+} else {
+  // In development, add a simple route for the root path
+  app.get('/', (req, res) => {
+    res.send('API is running. Please use the appropriate endpoints.');
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

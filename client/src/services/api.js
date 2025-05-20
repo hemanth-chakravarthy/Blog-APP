@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios with the base URL
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
+  baseURL: process.env.REACT_APP_API_URL || 'https://blog-app-1ntb.onrender.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -29,15 +29,11 @@ api.interceptors.response.use(
   (error) => {
     console.error('API Error:', error);
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       console.log('Response data:', error.response.data);
       console.log('Response status:', error.response.status);
     } else if (error.request) {
-      // The request was made but no response was received
       console.log('Request error - no response received');
     } else {
-      // Something happened in setting up the request
       console.log('Error message:', error.message);
     }
     return Promise.reject(error);
@@ -45,19 +41,4 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
