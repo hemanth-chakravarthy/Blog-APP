@@ -13,7 +13,6 @@ app.use(cors({
     'https://blog-app-rho-hazel-50.vercel.app',
     'blog-app-git-main-hemanthchinnu363-gmailcoms-projects.vercel.app',
     'blog-e1r46s216-hemanthchinnu363-gmailcoms-projects.vercel.app',
-    // Add any other domains you need
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
