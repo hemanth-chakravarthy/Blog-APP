@@ -19,16 +19,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: '*', // For testing - change to specific domains in production
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
-}));
-
-// Or for more specific configuration:
-/*
-app.use(cors({
   origin: [
     'http://localhost:3000',
+    'https://blog-app-git-main-hemanthchinnu363-gmailcoms-projects.vercel.app',
     'https://your-vercel-app-url.vercel.app',
     'https://your-custom-domain.com'
   ],
@@ -36,7 +29,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
-*/
 
 app.use(express.json());
 
@@ -71,6 +63,7 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
 
 
