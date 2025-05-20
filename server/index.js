@@ -33,7 +33,7 @@ app.use(cors({
 app.use(express.json());
 
 // Connect to MongoDB Atlas
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://khchakri:MrRbXJD0psruzFuB@cluster0.8zx8opy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Atlas connected'))
@@ -63,9 +63,4 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-
-
-
 
